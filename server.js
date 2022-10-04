@@ -42,6 +42,53 @@ app.get("/", (req, res) => {
     res.send("hello world");
 });
 
+///todo routes
+app.get("/todo", async (req, res) => {
+    const query = req.query.uid ? { createdById: req.query.uid } : {};
+    try {
+        // send all todo
+        res.json(await Todo.find(query));
+    } catch (error) {
+        //send error
+        res.status(400).json(error);
+    }
+});
+
+// todo CREATE ROUTE
+app.post("/todo", isAuthenticated, async (req, res) => {
+    try {
+        req.body.createdById = req.user.uid;
+        // send all todo
+        res.json(await Todo.create(req.body));
+    } catch (error) {
+        //send error
+        res.status(400).json(error);
+    }
+});
+
+// todo DELETE ROUTE
+app.delete("/todo/:id", isAuthenticated, async (req, res) => {
+    try {
+        // send all todo
+        res.json(await Todo.findByIdAndRemove(req.params.id));
+    } catch (error) {
+        //send error
+        res.status(400).json(error);
+    }
+});
+
+// todo UPDATE ROUTE
+app.put("/todo/:id", isAuthenticated, async (req, res) => {
+    try {
+        // send all todo
+        res.json(
+            await Todo.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        );
+    } catch (error) {
+        //send error
+        res.status(400).json(error);
+    }
+});
 
   
 
