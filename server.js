@@ -7,10 +7,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
 
-
-
-
-
 /// DATABASE CONNECTION
 mongoose.connect(MONGODB_URL, {
     useUnifiedTopology: true,
@@ -22,11 +18,32 @@ mongoose.connection
     .on("close", () => console.log("You are disconnected from mongoose"))
     .on("error", (error) => console.log(error));
 
+///Models
+const TodoSchema = new mongoose.Schema({
+    name: {type:String, required:true},
+    description: String,
+    uid: String
+}, {
+    timestamps: true
+});
+
+const Todo = mongoose.model("Todo", TodoSchema);
+
+/// MiddleWare
+app.use(cors()); 
+app.use(morgan("dev")); 
+app.use(express.json());
+
+
+
 /// ROUTES
 ///test route
 app.get("/", (req, res) => {
     res.send("hello world");
 });
+
+
+  
 
 /// LISTENER
 app.listen(PORT, () => console.log(`listening on PORT ${PORT}`));
