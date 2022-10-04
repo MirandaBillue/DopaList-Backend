@@ -34,6 +34,31 @@ app.use(cors());
 app.use(morgan("dev")); 
 app.use(express.json());
 
+///google firebase middleware
+const admin = require("firebase-admin");
+const serviceAccount = require("./serviceAccount.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+app.use(async function(req, res, next) {
+    const token = req.get("Authorization");
+    if(!token) return next();
+    const user = await admin.auth().verifyIdToken(token.replace("Bearer ", ""));
+    if(user) {
+      req.user = user;
+    } else {
+      return res.status(401).json({error: 'token invalid'});
+    }
+    next();
+  });
+  
+  function isAuthenticated(req, res, next){
+    if(req.user) return next();
+    res.status(401).json({error: 'please login first'});
+  }
+
 
 
 /// ROUTES
