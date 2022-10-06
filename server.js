@@ -37,7 +37,7 @@ app.use("/task", taskController)
 
 ///google firebase middleware
 const admin = require("firebase-admin");
-const serviceAccount = require("./serviceAccount.json");
+const serviceAccount = require(process.env.serviceAccount);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
