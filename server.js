@@ -1,6 +1,6 @@
 /// DEPENDENCIES
 require("dotenv").config();
-const PORT = process.env.PORT || port
+const { PORT = 4000, MONGODB_URL } = process.env;
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -8,7 +8,10 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 /// DATABASE CONNECTION
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(MONGODB_URL, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+});
 
 /// Connection Events
 mongoose.connection
@@ -33,7 +36,7 @@ app.use(express.json());
 
 ///google firebase middleware
 const admin = require("firebase-admin");
-const serviceAccount = require(process.env.serviceAccount);
+const serviceAccount = require("./serviceAccount.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -58,9 +61,9 @@ app.use(async function(req, res, next) {
 
 /// ROUTES
 ///test route
-// app.get("/", (req, res) => {
-//     res.send("hello world");
-// });
+app.get("/", (req, res) => {
+    res.send("hello world");
+});
 
 ///todo routes
 app.get("/todo", async (req, res) => {
