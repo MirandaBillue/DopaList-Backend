@@ -1,6 +1,6 @@
 /// DEPENDENCIES
 require("dotenv").config();
-const PORT = process.env.PORT || '8080';
+const PORT = process.env.PORT || port
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
