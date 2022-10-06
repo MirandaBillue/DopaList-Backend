@@ -1,6 +1,6 @@
 /// DEPENDENCIES
 require("dotenv").config();
-const { PORT = 4000, MONGODB_URL } = process.env;
+const PORT = process.env.PORT || '8080';
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -8,10 +8,8 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 /// DATABASE CONNECTION
-mongoose.connect(MONGODB_URL, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-});
+mongoose.connect(process.env.MONGODB_URI)
+
 /// Connection Events
 mongoose.connection
     .on("open", () => console.log("You are connected to mongoose"))
