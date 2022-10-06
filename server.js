@@ -21,7 +21,6 @@ mongoose.connection
 ///Models
 const TodoSchema = new mongoose.Schema({
     name: {type:String, required:true},
-    description: String,
     uid: String
 }, {
     timestamps: true
@@ -33,7 +32,6 @@ const Todo = mongoose.model("Todo", TodoSchema);
 app.use(cors()); 
 app.use(morgan("dev")); 
 app.use(express.json());
-app.use("/task", taskController)
 
 ///google firebase middleware
 const admin = require("firebase-admin");
@@ -62,9 +60,9 @@ app.use(async function(req, res, next) {
 
 /// ROUTES
 ///test route
-app.get("/", (req, res) => {
-    res.send("hello world");
-});
+// app.get("/", (req, res) => {
+//     res.send("hello world");
+// });
 
 ///todo routes
 app.get("/todo", async (req, res) => {
