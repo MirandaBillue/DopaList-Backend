@@ -33,6 +33,7 @@ const Todo = mongoose.model("Todo", TodoSchema);
 app.use(cors()); 
 app.use(morgan("dev")); 
 app.use(express.json());
+app.use("/task", taskController)
 
 ///google firebase middleware
 const admin = require("firebase-admin");
@@ -58,8 +59,6 @@ app.use(async function(req, res, next) {
     if(req.user) return next();
     res.status(401).json({error: 'please login first'});
   }
-
-
 
 /// ROUTES
 ///test route
@@ -115,7 +114,6 @@ app.put("/todo/:id", isAuthenticated, async (req, res) => {
     }
 });
 
-  
 
 /// LISTENER
 app.listen(PORT, () => console.log(`listening on PORT ${PORT}`));
